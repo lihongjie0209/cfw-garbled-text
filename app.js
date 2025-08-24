@@ -98,10 +98,25 @@ class GarbledTextRecoveryApp {
         try {
             const options = this.getRecoveryOptions();
             const response = await this.callRecoveryAPI(garbledText, options);
-            
+
             if (response.success) {
-                this.displayResults(response.data);
-                this.displayInfo(response.info);
+                if (Array.isArray(response.data) && response.data.length > 0) {
+                    this.displayResults(response.data);
+                    this.displayInfo(response.info);
+                } else {
+                    // 无结果时，尝试快速模式作为回退
+                    const quick = await this.callQuickAPI(garbledText, options);
+                    if (quick.success && quick.data) {
+                        this.displayResults([quick.data]);
+                        this.displayInfo({
+                            strategy: options.strategy,
+                            triedPairs: response?.info?.triedPairs || 'N/A'
+                        });
+                        this.showHint('已使用“快速模式”返回最佳结果。可尝试降低“最小可信度”或更换策略。');
+                    } else {
+                        this.showError('未找到合适的恢复结果，请尝试降低“最小可信度”或切换策略后重试');
+                    }
+                }
             } else {
                 this.showError(response.error || '恢复失败，请稍后重试');
             }
@@ -131,6 +146,18 @@ class GarbledTextRecoveryApp {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
 
+        return await response.json();
+    }
+
+    async callQuickAPI(garbledText, options) {
+        const response = await fetch(this.infoEndpoint.replace('/info', '/quick'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: garbledText, options })
+        });
+        if (!response.ok) {
+            return { success: false, error: `HTTP ${response.status}` };
+        }
         return await response.json();
     }
 
@@ -256,6 +283,18 @@ class GarbledTextRecoveryApp {
                 <strong>错误:</strong> ${this.escapeHtml(message)}
             </div>
         `;
+        this.errorSection.style.display = 'block';
+    }
+
+    showHint(message) {
+        const hint = document.createElement('div');
+        hint.className = 'error-message';
+        hint.style.background = '#fef3c7';
+        hint.style.borderColor = '#f59e0b';
+        hint.style.color = '#92400e';
+        hint.innerHTML = `<strong>提示:</strong> ${this.escapeHtml(message)}`;
+        this.errorContainer.innerHTML = '';
+        this.errorContainer.appendChild(hint);
         this.errorSection.style.display = 'block';
     }
 
