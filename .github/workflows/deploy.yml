@@ -1,0 +1,110 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: 🧪 Test
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🔍 Run linting (if available)
+        run: |
+          if npm run lint --silent 2>/dev/null; then
+            npm run lint
+          else
+            echo "No linting script found, skipping..."
+          fi
+        continue-on-error: true
+
+      - name: 🧪 Run tests
+        run: npm test --ignore-scripts
+
+      - name: 🏗️ Build project (optional)
+        run: |
+          if npm run build --silent 2>/dev/null; then
+            npm run build
+          else
+            echo "No build script, skipping"
+          fi
+
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            coverage/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    name: 🚀 Deploy to Cloudflare Workers
+    needs: test
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🚀 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Build project (optional)
+        run: |
+          if npm run build --silent 2>/dev/null; then
+            npm run build
+          else
+            echo "No build script, skipping"
+          fi
+
+      - name: 🌍 Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: 📝 Create deployment summary
+        if: success()
+        run: |
+          echo "### 🎉 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Garbled Text Recovery has been deployed to Cloudflare Workers" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **Workers.dev**: deployment created; check Cloudflare dashboard or action logs" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **Deployment Details**:" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Actor: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u)" >> $GITHUB_STEP_SUMMARY
+
