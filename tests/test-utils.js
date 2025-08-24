@@ -17,7 +17,7 @@ class TestUtils {
       },
       {
         description: '中文UTF-8乱码',
-        garbled: 'æˆ'çˆ±ä¸­å›½',
+        garbled: "æˆ'çˆ±ä¸­å›½",
         expected: '我爱中国',
         expectedEncoding: { source: 'gbk', target: 'utf-8' }
       },
@@ -234,8 +234,8 @@ class TestUtils {
   static generatePerformanceTestData(count = 100) {
     const data = [];
     const templates = [
-      'ä¸­æ–‡ä¹±ç ',
-      'æˆ'çˆ±ä¸­å›½',
+  'ä¸­æ–‡ä¹±ç ',
+  "æˆ'çˆ±ä¸­å›½",
       'Hello Worldï¼Œè¿™æ˜¯ä¸€ä¸ªæµ‹è¯•',
       'çš„ä¸€æ˜¯åœ¨ä¸'
     ];

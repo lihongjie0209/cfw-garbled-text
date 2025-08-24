@@ -18,7 +18,7 @@ describe('乱码文本恢复器测试', () => {
     });
 
     test('应该按可信度降序返回结果', () => {
-      const garbledText = 'æˆ'çˆ±ä¸­å›½';
+      const garbledText = "æˆ'çˆ±ä¸­å›½";
       const results = GarbledTextRecovery.recoverText(garbledText);
 
       for (let i = 1; i < results.length; i++) {

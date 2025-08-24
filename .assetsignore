@@ -1,11 +1,4 @@
-node_modules/
-.wrangler/tmp/
-dist/
-coverage/
-*.log
-*.tmp
-*.swp
-.DS_Store# Node
+# Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*

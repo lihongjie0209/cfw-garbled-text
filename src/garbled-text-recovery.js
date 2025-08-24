@@ -21,6 +21,42 @@ class GarbledTextRecovery {
     return instance.recover(garbledText, options);
   }
 
+  // 为测试暴露静态便捷方法
+  static tryRecovery(text, sourceEncoding, targetEncoding) {
+    const instance = new GarbledTextRecovery();
+    return instance.tryRecovery(text, sourceEncoding, targetEncoding);
+  }
+
+  static isNodeEnvironment() {
+    const instance = new GarbledTextRecovery();
+    return instance.isNodeEnvironment();
+  }
+
+  static fixGbkToUtf8(text) {
+    const instance = new GarbledTextRecovery();
+    return instance.fixGbkToUtf8(text);
+  }
+
+  static fixUtf8ToGbk(text) {
+    const instance = new GarbledTextRecovery();
+    return instance.fixUtf8ToGbk(text);
+  }
+
+  static fixLatin1ToUtf8(text) {
+    const instance = new GarbledTextRecovery();
+    return instance.fixLatin1ToUtf8(text);
+  }
+
+  static applyCommonFixes(text) {
+    const instance = new GarbledTextRecovery();
+    return instance.applyCommonFixes(text);
+  }
+
+  static getEncodingPairs(commonOnly = false) {
+    const manager = new EncodingConfigManager();
+    return manager.getEncodingPairs({ commonOnly });
+  }
+
   /**
    * 恢复实例方法
    * @param {string} garbledText - 乱码文本
@@ -36,7 +72,7 @@ class GarbledTextRecovery {
       useRecommended = true
     } = options;
 
-    if (!garbledText || typeof garbledText !== 'string') {
+  if (!garbledText || typeof garbledText !== 'string') {
       throw new Error('输入必须是非空字符串');
     }
 
@@ -136,6 +172,11 @@ class GarbledTextRecovery {
    */
   tryRecoveryWithTextEncoder(text, sourceEncoding, targetEncoding) {
     // 简化的编码转换逻辑
+    // 先做基本校验，未知编码直接抛错以匹配测试期望
+    const allSupported = this.configManager.getAllSupportedEncodings();
+    if (!allSupported.includes(sourceEncoding) || !allSupported.includes(targetEncoding)) {
+      throw new Error(`不支持的编码: ${sourceEncoding} 或 ${targetEncoding}`);
+    }
     // 处理常见的中文乱码情况
     
     if (sourceEncoding === 'gbk' && targetEncoding === 'utf-8') {
@@ -151,7 +192,7 @@ class GarbledTextRecovery {
     }
 
     // 对于其他编码，尝试一些常见的修复模式
-    return this.applyCommonFixes(text);
+  return this.applyCommonFixes(text);
   }
 
   /**
@@ -229,9 +270,8 @@ class GarbledTextRecovery {
    * @returns {boolean}
    */
   isNodeEnvironment() {
-    return typeof process !== 'undefined' && 
-           process.versions && 
-           process.versions.node;
+  return typeof process !== 'undefined' &&
+       !!(process.versions && process.versions.node);
   }
 }
 

@@ -123,7 +123,7 @@ describe('主入口文件测试', () => {
     test('应该处理字符串数组', () => {
       const garbledTexts = [
         'ä¸­æ–‡ä¹±ç ',
-        'æˆ'çˆ±ä¸­å›½',
+        "æˆ'çˆ±ä¸­å›½",
         '这是正常文本'
       ];
       
@@ -172,7 +172,7 @@ describe('主入口文件测试', () => {
     });
 
     test('应该支持配置选项', () => {
-      const garbledTexts = ['ä¸­æ–‡ä¹±ç ', 'æˆ'çˆ±ä¸­å›½'];
+  const garbledTexts = ['ä¸­æ–‡ä¹±ç ', "æˆ'çˆ±ä¸­å›½"];
       const options = { maxResults: 2, minCredibility: 60 };
       const results = batchRecover(garbledTexts, options);
 

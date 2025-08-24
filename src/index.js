@@ -37,6 +37,10 @@ function recoverFromGarbledText(garbledText, options = {}) {
  * @returns {Object} 包含得分和详细信息的对象
  */
 function detectTextCredibility(text) {
+  // 按公共入口的要求：null/undefined 视为错误，其它输入（包括空字符串）允许并返回结构化结果
+  if (text === null || text === undefined) {
+    throw new Error('输入必须是非空字符串');
+  }
   return TextCredibilityDetector.calculateCredibility(text);
 }
 
@@ -69,17 +73,20 @@ function batchRecover(garbledTexts, options = {}) {
 
   return garbledTexts.map((text, index) => {
     try {
-      const result = quickRecover(text, options);
+      const results = recoverFromGarbledText(text, options);
+      const best = results && results.length > 0 ? results[0] : null;
       return {
         index,
         originalText: text,
-        result: result,
-        success: result !== null
+        results,
+        result: best,
+        success: Array.isArray(results) && results.length > 0
       };
     } catch (error) {
       return {
         index,
         originalText: text,
+        results: [],
         result: null,
         success: false,
         error: error.message
