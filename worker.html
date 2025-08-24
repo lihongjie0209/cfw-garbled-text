@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乱码文本恢复工具</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🔧 乱码文本恢复工具</h1>
+            <p class="subtitle">智能检测并恢复各种编码错误导致的乱码文本</p>
+        </header>
+
+        <main class="main">
+            <!-- 配置选项区域 -->
+            <div class="config-section">
+                <h2>配置选项</h2>
+                <div class="config-grid">
+                    <div class="config-item">
+                        <label for="strategy">转换策略：</label>
+                        <select id="strategy" class="select">
+                            <option value="fast">快速模式 (最常见编码)</option>
+                            <option value="balanced" selected>平衡模式 (推荐)</option>
+                            <option value="aggressive">激进模式 (全面尝试)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="config-item">
+                        <label for="category">编码类别：</label>
+                        <select id="category" class="select">
+                            <option value="">全部类别</option>
+                            <option value="chinese">中文编码</option>
+                            <option value="western">西文编码</option>
+                            <option value="japanese">日文编码</option>
+                            <option value="korean">韩文编码</option>
+                        </select>
+                    </div>
+                    
+                    <div class="config-item">
+                        <label for="minCredibility">最小可信度：</label>
+                        <input type="number" id="minCredibility" class="input" value="30" min="0" max="100" step="5">
+                        <span class="unit">%</span>
+                    </div>
+                    
+                    <div class="config-item">
+                        <label for="maxResults">最大结果数：</label>
+                        <input type="number" id="maxResults" class="input" value="5" min="1" max="20">
+                    </div>
+                </div>
+                
+                <div class="config-toggles">
+                    <label class="toggle">
+                        <input type="checkbox" id="useRecommended" checked>
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">使用智能推荐编码对</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 输入区域 -->
+            <div class="input-section">
+                <h2>输入乱码文本</h2>
+                <div class="textarea-container">
+                    <textarea 
+                        id="garbledText" 
+                        class="textarea" 
+                        placeholder="请输入需要恢复的乱码文本，例如：
+• ä¸­æ–‡ä¹±ç 
+• IO Error: Áíһ¸ö³ÌÐòÕýÔÚʹÓôËÎļþ
+• HÃ¤llo WÃ¶rld"
+                        rows="6"
+                    ></textarea>
+                    <div class="textarea-footer">
+                        <span id="charCount" class="char-count">0 字符</span>
+                        <button id="clearBtn" class="btn-clear" type="button">清空</button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="quickRecoverBtn" class="btn btn-primary">
+                        <span class="btn-icon">⚡</span>
+                        快速恢复
+                    </button>
+                    <button id="fullAnalysisBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🔍</span>
+                        完整分析
+                    </button>
+                    <button id="batchRecoverBtn" class="btn btn-outline">
+                        <span class="btn-icon">📋</span>
+                        批量处理
+                    </button>
+                </div>
+            </div>
+
+            <!-- 结果区域 -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <h2>恢复结果</h2>
+                <div id="resultsContainer" class="results-container">
+                    <!-- 结果将通过JavaScript动态插入 -->
+                </div>
+            </div>
+
+            <!-- 配置信息区域 -->
+            <div class="info-section">
+                <h2>配置信息</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>支持的编码</h3>
+                        <div id="supportedEncodings" class="encoding-list">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>转换策略</h3>
+                        <div id="strategyInfo" class="strategy-info">
+                            <div class="loading">加载中...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 乱码文本恢复工具 | 基于智能编码检测和可信度评估</p>
+        </footer>
+    </div>
+
+    <!-- 加载状态遮罩 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>正在处理...</p>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

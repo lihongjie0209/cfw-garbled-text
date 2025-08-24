@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乱码文本恢复工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 乱码文本恢复工具</h1>
+            <p class="subtitle">智能恢复各种编码错误导致的乱码文本</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <div class="form-group">
+                    <label for="garbledText">输入乱码文本:</label>
+                    <textarea 
+                        id="garbledText" 
+                        placeholder="请输入需要恢复的乱码文本，例如：ä¸­æ–‡ä¹±ç  或 HÃ¤llo WÃ¶rld"
+                        rows="4"
+                    ></textarea>
+                </div>
+
+                <div class="options-section">
+                    <div class="form-group">
+                        <label for="strategy">转换策略:</label>
+                        <select id="strategy">
+                            <option value="fast">快速模式 - 只尝试常见编码</option>
+                            <option value="balanced" selected>平衡模式 - 速度和准确性平衡</option>
+                            <option value="aggressive">激进模式 - 尝试所有可能编码</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">编码类别:</label>
+                        <select id="category">
+                            <option value="">自动检测</option>
+                            <option value="chinese">中文编码</option>
+                            <option value="western">西文编码</option>
+                            <option value="japanese">日文编码</option>
+                            <option value="korean">韩文编码</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maxResults">最大结果数:</label>
+                        <input type="number" id="maxResults" value="5" min="1" max="20">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="minCredibility">最小可信度:</label>
+                        <input type="number" id="minCredibility" value="30" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="recoverBtn" class="btn btn-primary">
+                        <span class="btn-text">恢复文本</span>
+                        <span class="btn-loading" style="display: none;">处理中...</span>
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary">清空</button>
+                    <button id="exampleBtn" class="btn btn-outline">试一试</button>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h3>恢复结果</h3>
+                <div id="resultsContainer"></div>
+            </div>
+
+            <div class="info-section" id="infoSection" style="display: none;">
+                <h3>检测信息</h3>
+                <div id="infoContainer"></div>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <h3>错误信息</h3>
+                <div id="errorContainer"></div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="examples">
+                <h4>常见乱码示例:</h4>
+                <div class="example-grid">
+                    <div class="example-item" data-text="ä¸­æ–‡ä¹±ç ">
+                        <span class="example-garbled">ä¸­æ–‡ä¹±ç </span>
+                        <span class="example-arrow">→</span>
+                        <span class="example-recovered">中文乱码</span>
+                    </div>
+                    <div class="example-item" data-text="HÃ¤llo WÃ¶rld">
+                        <span class="example-garbled">HÃ¤llo WÃ¶rld</span>
+                        <span class="example-arrow">→</span>
+                        <span class="example-recovered">Hällo Wörld</span>
+                    </div>
+                    <div class="example-item" data-text="Áíһ¸ö³ÌÐòÕýÔÚʹÓôËÎļþ">
+                        <span class="example-garbled">Áíһ¸ö³ÌÐòÕýÔÚʹÓôËÎļþ</span>
+                        <span class="example-arrow">→</span>
+                        <span class="example-recovered">另一个程序正在使用此文件</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="supportedEncodings">11</span>
+                    <span class="stat-label">支持编码</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="totalStrategies">3</span>
+                    <span class="stat-label">转换策略</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="accuracyRate">85%</span>
+                    <span class="stat-label">准确率</span>
+                </div>
+            </div>
+
+            <p class="copyright">
+                © 2025 乱码文本恢复工具 | 
+                <a href="https://github.com/your-repo/garbled-text-recovery" target="_blank">GitHub</a> |
+                <a href="#" id="apiDocsLink">API 文档</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

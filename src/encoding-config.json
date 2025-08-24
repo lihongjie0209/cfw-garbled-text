@@ -1,0 +1,190 @@
+{
+  "supportedEncodings": {
+    "chinese": [
+      "utf-8",
+      "gbk",
+      "gb2312",
+      "big5"
+    ],
+    "western": [
+      "utf-8",
+      "iso-8859-1",
+      "windows-1252",
+      "iso-8859-2",
+      "iso-8859-15"
+    ],
+    "japanese": [
+      "utf-8",
+      "shift_jis",
+      "euc-jp"
+    ],
+    "korean": [
+      "utf-8",
+      "euc-kr"
+    ]
+  },
+  "commonPairs": [
+    {
+      "sourceEncoding": "gbk",
+      "targetEncoding": "utf-8",
+      "description": "GBK被误认为UTF-8",
+      "priority": 1,
+      "category": "chinese"
+    },
+    {
+      "sourceEncoding": "utf-8",
+      "targetEncoding": "gbk",
+      "description": "UTF-8被误认为GBK",
+      "priority": 1,
+      "category": "chinese"
+    },
+    {
+      "sourceEncoding": "iso-8859-1",
+      "targetEncoding": "utf-8",
+      "description": "Latin-1被误认为UTF-8",
+      "priority": 2,
+      "category": "western"
+    },
+    {
+      "sourceEncoding": "windows-1252",
+      "targetEncoding": "utf-8",
+      "description": "Windows-1252被误认为UTF-8",
+      "priority": 2,
+      "category": "western"
+    },
+    {
+      "sourceEncoding": "big5",
+      "targetEncoding": "utf-8",
+      "description": "Big5被误认为UTF-8",
+      "priority": 3,
+      "category": "chinese"
+    },
+    {
+      "sourceEncoding": "utf-8",
+      "targetEncoding": "big5",
+      "description": "UTF-8被误认为Big5",
+      "priority": 3,
+      "category": "chinese"
+    }
+  ],
+  "extendedPairs": [
+    {
+      "sourceEncoding": "gb2312",
+      "targetEncoding": "utf-8",
+      "description": "GB2312被误认为UTF-8",
+      "priority": 4,
+      "category": "chinese"
+    },
+    {
+      "sourceEncoding": "utf-8",
+      "targetEncoding": "gb2312",
+      "description": "UTF-8被误认为GB2312",
+      "priority": 4,
+      "category": "chinese"
+    },
+    {
+      "sourceEncoding": "shift_jis",
+      "targetEncoding": "utf-8",
+      "description": "Shift_JIS被误认为UTF-8",
+      "priority": 5,
+      "category": "japanese"
+    },
+    {
+      "sourceEncoding": "euc-jp",
+      "targetEncoding": "utf-8",
+      "description": "EUC-JP被误认为UTF-8",
+      "priority": 5,
+      "category": "japanese"
+    },
+    {
+      "sourceEncoding": "euc-kr",
+      "targetEncoding": "utf-8",
+      "description": "EUC-KR被误认为UTF-8",
+      "priority": 5,
+      "category": "korean"
+    },
+    {
+      "sourceEncoding": "iso-8859-2",
+      "targetEncoding": "utf-8",
+      "description": "ISO-8859-2被误认为UTF-8",
+      "priority": 6,
+      "category": "western"
+    },
+    {
+      "sourceEncoding": "iso-8859-15",
+      "targetEncoding": "utf-8",
+      "description": "ISO-8859-15被误认为UTF-8",
+      "priority": 6,
+      "category": "western"
+    }
+  ],
+  "charReplacementMaps": {
+    "gbkToUtf8": {
+      "Â": "",
+      "â€œ": "\"",
+      "â€": "\"",
+      "â€™": "'",
+      "ä¸": "中",
+      "æ": "我",
+      "è": "的",
+      "åä": "国",
+      "äº": "人"
+    },
+    "latin1ToUtf8": {
+      "Ã": "中",
+      "Â": "",
+      "Ä": "国"
+    },
+    "htmlEntities": {
+      "&amp;": "&",
+      "&lt;": "<",
+      "&gt;": ">",
+      "&quot;": "\"",
+      "&#39;": "'"
+    }
+  },
+  "autoDetectionRules": {
+    "chineseIndicators": [
+      "ä¸",
+      "æ",
+      "è",
+      "åä",
+      "äº",
+      "Ã",
+      "Ä",
+      "脕",
+      "铆",
+      "脦",
+      "脿"
+    ],
+    "latinIndicators": [
+      "Ã",
+      "Â",
+      "Ä",
+      "Ö",
+      "Ü",
+      "ß"
+    ],
+    "unicodeReplacementChars": [
+      "�",
+      "\uFFFD"
+    ]
+  },
+  "conversionStrategies": {
+    "aggressive": {
+      "description": "尝试所有可能的编码组合",
+      "maxAttempts": 50,
+      "includeExtended": true
+    },
+    "balanced": {
+      "description": "平衡速度和准确性",
+      "maxAttempts": 20,
+      "includeExtended": false
+    },
+    "fast": {
+      "description": "只尝试最常见的编码对",
+      "maxAttempts": 6,
+      "includeExtended": false
+    }
+  }
+}

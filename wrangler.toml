@@ -1,0 +1,21 @@
+name = "garbled-text-recovery-worker"
+main = "worker.js"
+compatibility_date = "2025-08-24"
+# Enable Node.js compatibility shims so iconv-lite/Buffer work if bundled (Wrangler v4)
+compatibility_flags = ["nodejs_compat"]
+
+# Serve static assets directly from the project root (only a few files will be requested)
+[assets]
+directory = "."
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+
+# Optional: locals
+[dev]
+port = 8787
+local_protocol = "http"
+
+# You can later add routes when deploying to a zone
+# [[routes]]
+# pattern = "your-domain.com/*"
+# zone_id = "YOUR_ZONE_ID"

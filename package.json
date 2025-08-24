@@ -1,0 +1,28 @@
+{
+  "name": "garbled-text-recovery",
+  "version": "1.0.0",
+  "description": "A JavaScript library to recover garbled text by detecting encoding issues",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "dev": "node src/example.js"
+  },
+  "keywords": ["encoding", "garbled-text", "text-recovery", "charset"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.6.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/example.js"
+    ]
+  }
+}
