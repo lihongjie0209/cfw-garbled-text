@@ -1,26 +1,23 @@
-const fs = require('fs');
-const path = require('path');
-
-// 加载从CSV转换的中文字符频率数据
+// 加载从CSV转换的中文字符频率数据（使用 require 以兼容 Cloudflare Workers 打包，避免 fs）
 let chineseFrequencyFromCSV = {};
 try {
-  const jsonPath = path.join(__dirname, 'chinese-frequency.json');
-  const jsonData = fs.readFileSync(jsonPath, 'utf-8');
-  chineseFrequencyFromCSV = JSON.parse(jsonData);
-  
+  // 直接 require JSON（Node 支持，打包器也会内联）
+  // eslint-disable-next-line import/no-dynamic-require, global-require
+  chineseFrequencyFromCSV = require('./chinese-frequency.json');
+
   // 过滤掉非中文字符（数字等）
   const filteredChineseFrequency = {};
   Object.entries(chineseFrequencyFromCSV).forEach(([char, freq]) => {
     // 只保留中文字符、常用标点符号
-    if (/[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/.test(char) || 
+    if (/[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/.test(char) ||
         /[，。、？！：；""''（）【】《》]/.test(char)) {
       filteredChineseFrequency[char] = freq;
     }
   });
-  
+
   chineseFrequencyFromCSV = filteredChineseFrequency;
 } catch (error) {
-  // 如果无法加载CSV数据，使用备用数据
+  // 如果无法加载JSON数据，使用备用数据（最小集合）
   chineseFrequencyFromCSV = {
     '的': 4887, '一': 1406, '是': 1316, '不': 1071, '了': 952,
     '在': 926, '有': 908, '人': 782, '这': 762, '上': 603,
@@ -34,7 +31,7 @@ try {
 // 添加常用标点符号的频率（基于经验值）
 const punctuationFrequency = {
   '。': 2000, '，': 1800, '、': 500, '？': 300, '！': 200,
-  '：': 150, '；': 100, '"': 80, '"': 80, "'": 60, "'": 60,
+  '：': 150, '；': 100, '"': 80, "'": 60,
   '（': 40, '）': 40, '【': 20, '】': 20, '《': 15, '》': 15
 };
 
